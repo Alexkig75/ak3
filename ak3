@@ -1,0 +1,32 @@
+import requests
+
+# GitHub account information
+username = "your_username"
+access_token = "your_access_token"
+
+# Repository information
+repo_name = "new_repo"
+description = "This is a new repository created using the GitHub API."
+is_private = False
+
+# API endpoint
+api_base_url = "https://api.github.com"
+repos_url = f"{api_base_url}/user/repos"
+
+# Create the repository
+headers = {
+    "Authorization": f"token {access_token}",
+    "Accept": "application/vnd.github.v3+json"
+}
+data = {
+    "name": repo_name,
+    "description": description,
+    "private": is_private
+}
+response = requests.post(repos_url, headers=headers, json=data)
+
+if response.status_code == 201:
+    repo_url = response.json()["html_url"]
+    print(f"Successfully created repository '{repo_name}'. URL: {repo_url}")
+else:
+    print(f"Failed to create repository. Error message: {response.text}")
